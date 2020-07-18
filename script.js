@@ -9,8 +9,11 @@ class todoList{
         this.h2 = document.createElement('h2');
         this.h2.innerText = title;
         this.input = document.createElement('input');
+        this.input.classList.add("comment");
         this.button = document.createElement('button');
         this.button.innerText = 'Add';
+        this.button.classList.add("btn-save");
+        this.button.id = "to-do-list-button";
 
         this.button.addEventListener('click', ()=>{
             this.addToDo.call(this);
@@ -56,8 +59,10 @@ class Card{
     render(){
         this.card = document.createElement('div');
         this.card.classList.add("card");
-        this.card.addEventListener('click', ()=>{
-            this.showMenu.call(this);
+        this.card.addEventListener('click', (e)=>{
+            if(e.target != this.deleteButton){
+                this.showMenu.call(this);
+            }
         });
 
         this.p = document.createElement('p');
@@ -99,14 +104,15 @@ class Card{
         this.menuTitle.className = "menuTitle";
         this.menuDescription.className = "menuDescription";
         this.menuComments.className = "menuComments";
-        this.commentsInput.className = "commentsInput";
-        this.commentsButton.className = "commentsButton";
+        this.commentsInput.className = "commentsInput comment";
+        this.commentsButton.className = "commentsButton btn-save";
 
         //Add inner Text
         //this.menuTitle.innerText = this.state.text;
         //this.menuDescription.innerText = this.state.description;
         //this.menuComments.innerText = this.state.comments.toString();
         this.commentsButton.innerText = "Add";
+        this.commentsInput.placeholder = "Write a comment...";
 
         //Event listeners
         this.menuContainer.addEventListener('click', (e)=>{
@@ -119,7 +125,7 @@ class Card{
         this.commentsButton.addEventListener('click', ()=>{
             this.state.comments.push(this.commentsInput.value);
             this.renderComments();
-            console.log(this.state);
+            this.commentsInput.value = "";
         })
 
         //Append
@@ -131,8 +137,8 @@ class Card{
         this.menuContainer.append(this.menu);
         root.append(this.menuContainer);
 
-        this.editableDescription = new EditableText(this.state.description, this.menuDescription, this, "description");
-        this.editableTitle = new EditableText(this.state.text, this.menuTitle, this, "text");
+        this.editableDescription = new EditableText(this.state.description, this.menuDescription, this, "description", "textarea");
+        this.editableTitle = new EditableText(this.state.text, this.menuTitle, this, "text", "input");
         
         this.renderComments();
     }
@@ -152,11 +158,12 @@ class Card{
 }
 
 class EditableText{
-    constructor(text, place, card, property){
+    constructor(text, place, card, property, typeOfInput){
         this.text = text;
         this.place = place;
         this.card = card;
         this.property = property;
+        this.typeOfInput = typeOfInput;
         this.render();
     }
 
@@ -177,12 +184,14 @@ class EditableText{
     showEditableTextArea(){
         let oldText = this.text;
 
-        this.input = document.createElement('input');
+        this.input = document.createElement(this.typeOfInput);
         this.saveButton = document.createElement("button");
 
         this.p.remove();
         this.input.value = oldText;
         this.saveButton.innerText = "Save";
+        this.saveButton.className = "btn-save";
+        this.input.classList.add("comment");
 
         this.saveButton.addEventListener('click', ()=>{
             this.text = this.input.value;
@@ -203,12 +212,16 @@ class EditableText{
         }
 
         this.input.addEventListener("keyup", (e)=>{
-            console.log(e.keyCode)
-            clickSaveButton(e, this);
+            if(this.typeOfInput == "input"){
+                clickSaveButton(e, this);
+            }
         });
 
         this.div.append(this.input);
-        this.div.append(this.saveButton);
+
+        if(this.typeOfInput == "textarea"){
+            this.div.append(this.saveButton);
+        }
 
         this.input.select();
     }
@@ -238,6 +251,9 @@ let todoList1 = new todoList(root);
 let todoList2 = new todoList(root);
 let todoList3 = new todoList(root);
 
+
+
 todoList1.input.value = "asdasds";
 todoList1.addToDo();
-todoList1.cardArray[0].showMenu();
+
+//todoList1.cardArray[0].showMenu();
