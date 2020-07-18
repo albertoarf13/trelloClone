@@ -103,9 +103,9 @@ class Card{
         this.commentsButton.className = "commentsButton";
 
         //Add inner Text
-        this.menuTitle.innerText = this.state.text;
+        //this.menuTitle.innerText = this.state.text;
         //this.menuDescription.innerText = this.state.description;
-        this.menuComments.innerText = this.state.comments.toString();
+        //this.menuComments.innerText = this.state.comments.toString();
         this.commentsButton.innerText = "Add";
 
         //Event listeners
@@ -118,7 +118,7 @@ class Card{
         
         this.commentsButton.addEventListener('click', ()=>{
             this.state.comments.push(this.commentsInput.value);
-            this.menuComments.innerText = this.state.comments.toString();
+            this.renderComments();
             console.log(this.state);
         })
 
@@ -129,17 +129,34 @@ class Card{
         this.menu.append(this.commentsButton);
         this.menu.append(this.menuComments);
         this.menuContainer.append(this.menu);
-        this.place.append(this.menuContainer);
+        root.append(this.menuContainer);
 
-        this.editableText = new EditableText(this.state.description, this.menuDescription, this);
+        this.editableDescription = new EditableText(this.state.description, this.menuDescription, this, "description");
+        this.editableTitle = new EditableText(this.state.text, this.menuTitle, this, "text");
+        
+        this.renderComments();
+    }
+
+    renderComments(){
+
+        let currentCommentsDOM = Array.from(this.menuComments.childNodes);
+
+        currentCommentsDOM.forEach(commentDOM =>{
+            commentDOM.remove();
+        })
+
+        this.state.comments.forEach(comment =>{
+            new Comment(comment, this.menuComments, this);
+        });
     }
 }
 
 class EditableText{
-    constructor(text, place, card){
+    constructor(text, place, card, property){
         this.text = text;
         this.place = place;
         this.card = card;
+        this.property = property;
         this.render();
     }
 
@@ -160,7 +177,7 @@ class EditableText{
     showEditableTextArea(){
         let oldText = this.text;
 
-        this.input = document.createElement('textarea');
+        this.input = document.createElement('input');
         this.saveButton = document.createElement("button");
 
         this.p.remove();
@@ -169,13 +186,49 @@ class EditableText{
 
         this.saveButton.addEventListener('click', ()=>{
             this.text = this.input.value;
-            this.card.state.description = this.input.value;
+            this.card.state[this.property] = this.input.value;
             this.div.remove();
             this.render();
         });
 
+        function clickSaveButton(event, object){
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+                console.log("PENE")
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                object.saveButton.click();
+              }
+        }
+
+        this.input.addEventListener("keyup", (e)=>{
+            console.log(e.keyCode)
+            clickSaveButton(e, this);
+        });
+
         this.div.append(this.input);
         this.div.append(this.saveButton);
+
+        this.input.select();
+    }
+
+}
+
+class Comment{
+    constructor(text, place, card){
+        this.text = text;
+        this.place = place;
+        this.card = card;
+        this.render();
+    }
+
+    render(){
+        this.div = document.createElement('div');
+        this.div.className = "comment";
+        this.div.innerText = this.text;
+        
+        this.place.append(this.div);
     }
 }
 
