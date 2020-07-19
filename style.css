@@ -5,15 +5,26 @@
 }
 
 body{
-    background-color: rgb(30, 30, 95);
+    /*background-color: rgb(30, 30, 95);*/
+    background-color: rgb(43, 43, 83);
     font-family: "Open Sans";
 }
+
+
 
 button{
     outline: none;
     cursor: pointer;
 }
 
+#addTodoListDiv{
+    margin-left: 2em;
+    margin-top: 4em;
+}
+
+#addTodoListDiv button{
+    margin-left: 0.5em;
+}
 
 
 #root{

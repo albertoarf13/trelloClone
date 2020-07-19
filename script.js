@@ -1,5 +1,6 @@
 let root = document.getElementById("root");
 
+
 class todoList{
     constructor(place, title = "to-do list"){
 
@@ -244,6 +245,14 @@ class Comment{
         this.place.append(this.div);
     }
 }
+
+
+let addTodoListInput = document.getElementById("addTodoListInput");
+let addTodoListButton = document.getElementById("addTodoListButton");
+
+addTodoListButton.addEventListener('click',()=>{
+    new todoList(root, addTodoListInput.value);
+});
 
 
 
