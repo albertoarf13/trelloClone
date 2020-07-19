@@ -197,6 +197,9 @@ class EditableText{
         this.saveButton.addEventListener('click', ()=>{
             this.text = this.input.value;
             this.card.state[this.property] = this.input.value;
+            if(this.property == "text"){
+                this.card.p.innerText = this.input.value;
+            }
             this.div.remove();
             this.render();
         });
