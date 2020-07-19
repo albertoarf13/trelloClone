@@ -30,7 +30,7 @@ button{
 #root{
     margin: 1em;
     /*border: 1px solid grey;*/
-    display: flex;
+    /*display: flex;*/
     min-width: 1200px;
 }
 
@@ -42,6 +42,8 @@ button{
     background: rgb(235, 235, 235);
     padding: 0.7em;
     margin: 1em 0 1em 1em;
+
+    float: left;
 }
 
 .todoList h2{

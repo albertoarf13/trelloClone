@@ -51,8 +51,8 @@ class Card{
         this.todoList = todoList;
         this.state = {
             text: text,
-            description: undefined,
-            comments: [1,2,3]
+            description: "Click to write a description...",
+            comments: []
         }
         this.render();
     }
