@@ -17,7 +17,9 @@ class todoList{
         this.button.id = "to-do-list-button";
 
         this.button.addEventListener('click', ()=>{
+            if(this.input.value != ""){
             this.addToDo.call(this);
+            }
         });
 
         this.div = document.createElement('div');
