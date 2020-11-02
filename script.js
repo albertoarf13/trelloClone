@@ -5,51 +5,56 @@ class todoList{
     constructor(place, title = "to-do list"){
 
         this.place = place;
+        this.title = title;
         this.cardArray = [];
 
+        this.render();
+    }
+
+    addToDo(){
+        let text = this.input.value;
+        this.cardArray.push(new Card(text, this.div, this));
+    }
+
+    render(){
+        this.createToDoListElement();
+        this.place.append(this.todoListElement);
+    }
+
+    createToDoListElement(){
+        //Create elements
         this.h2 = document.createElement('h2');
-        this.h2.innerText = title;
+        this.h2.innerText = this.title;
         this.input = document.createElement('input');
         this.input.classList.add("comment");
         this.button = document.createElement('button');
         this.button.innerText = 'Add';
         this.button.classList.add("btn-save");
         this.button.id = "to-do-list-button";
-
-        this.button.addEventListener('click', ()=>{
-            if(this.input.value != ""){
-            this.addToDo.call(this);
-            this.input.value = "";
-            }
-        });
-
         this.div = document.createElement('div');
         this.todoListElement = document.createElement('div');
 
+        //Add Event listener
+        this.button.addEventListener('click', ()=>{
+            if(this.input.value != ""){
+                this.addToDo.call(this);
+                this.input.value = "";
+            }
+        });
+
+        //Append elements to the to-do list element
         this.todoListElement.append(this.h2);
         this.todoListElement.append(this.input);
         this.todoListElement.append(this.button);
         this.todoListElement.append(this.div);
         this.todoListElement.classList.add("todoList");
-
-        place.append(this.todoListElement);
-    }
-
-    addToDo(){
-        let text = this.input.value;
-
-        /*let card = document.createElement('div');
-        card.innerText = text;
-        this.div.append(card);*/
-
-        this.cardArray.push(new Card(text, this.div, this));
     }
 }
 
 
 class Card{
     constructor(text, place, todoList){
-        //this.text = text;
+
         this.place = place;
         this.todoList = todoList;
         this.state = {
@@ -90,7 +95,7 @@ class Card{
         this.todoList.cardArray.splice(i,1);
     }
 
-    showMenu(){//todoList1.cardArray[0].showMenu()
+    showMenu(){
 
         //Create elements
         this.menu = document.createElement("div");
@@ -112,9 +117,6 @@ class Card{
         this.commentsButton.className = "commentsButton btn-save";
 
         //Add inner Text
-        //this.menuTitle.innerText = this.state.text;
-        //this.menuDescription.innerText = this.state.description;
-        //this.menuComments.innerText = this.state.comments.toString();
         this.commentsButton.innerText = "Add";
         this.commentsInput.placeholder = "Write a comment...";
 
@@ -155,7 +157,7 @@ class Card{
 
         currentCommentsDOM.forEach(commentDOM =>{
             commentDOM.remove();
-        })
+        });
 
         this.state.comments.forEach(comment =>{
             new Comment(comment, this.menuComments, this);
@@ -212,7 +214,6 @@ class EditableText{
         function clickSaveButton(event, object){
             // Number 13 is the "Enter" key on the keyboard
             if (event.keyCode === 13) {
-                console.log("PENE")
                 // Cancel the default action, if needed
                 event.preventDefault();
                 // Trigger the button element with a click
@@ -255,6 +256,9 @@ class Comment{
 }
 
 
+
+//-------------main------------
+
 let addTodoListInput = document.getElementById("addTodoListInput");
 let addTodoListButton = document.getElementById("addTodoListButton");
 
@@ -276,4 +280,3 @@ let todoList3 = new todoList(root);
 todoList1.input.value = "asdasds";
 todoList1.addToDo();
 
-//todoList1.cardArray[0].showMenu();
