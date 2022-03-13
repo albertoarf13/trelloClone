@@ -33,6 +33,7 @@ class todoList{
         this.button.id = "to-do-list-button";
         this.div = document.createElement('div');
         this.todoListElement = document.createElement('div');
+        this.div.classList.add("cards");
 
         //Add Event listener
         this.button.addEventListener('click', ()=>{
